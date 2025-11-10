@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gym_app/pages/home_page/home_page.dart';
 import 'package:gym_app/utils/colors.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -12,12 +13,16 @@ class LoadingPage extends StatefulWidget {
 
 class _LoadingPageState extends State<LoadingPage> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), (){
-      //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +33,7 @@ class _LoadingPageState extends State<LoadingPage> {
           children: [
             // Big Text
             Text(
-              "FLIT\GYM",
+              "FLITGYM",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 48,

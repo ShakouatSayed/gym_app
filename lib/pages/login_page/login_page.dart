@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.bgColor,
         body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 80),
+          padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -108,9 +108,7 @@ class LoginPage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: const Color(0xFF1E6FFF),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 20,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -130,9 +128,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {},
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Colors.white),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 15,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),

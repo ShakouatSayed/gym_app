@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gym_app/pages/login_page/login_page.dart';
 import 'package:gym_app/utils/colors.dart';
-import 'package:gym_app/utils/dimentions.dart';
 
 class IntroPage extends StatefulWidget {
   const IntroPage({super.key});
@@ -14,12 +13,16 @@ class IntroPage extends StatefulWidget {
 
 class _IntroPageState extends State<IntroPage> {
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), (){
-      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginPage()));
+    Timer(Duration(seconds: 3), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +45,7 @@ class _IntroPageState extends State<IntroPage> {
               ),
             ),
 
-             SizedBox(height:20),
+            SizedBox(height: 20),
 
             // Subtitle Text
             Text(
