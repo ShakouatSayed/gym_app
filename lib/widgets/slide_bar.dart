@@ -1,105 +1,140 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-class SlideBar extends StatelessWidget {
-  const SlideBar({super.key});
-  // Widget _buildSlideBar(int index, ProductModel popularProduct) {
-  //   Matrix4 matrix = new Matrix4.identity();
-  //   if (index == _currPageValue.floor()) {
-  //     var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
-  //     var currTrans = _height * (1 - currScale) / 2;
-  //     matrix = Matrix4.diagonal3Values(1, currScale, 1)
-  //       ..setTranslationRaw(0, currTrans, 0);
-  //   } else if (index == _currPageValue.floor() + 1) {
-  //     var currScale =
-  //         _scaleFactor + (_currPageValue - index + 1) * (1 - _scaleFactor);
-  //     var currTrans = _height * (1 - currScale) / 2;
-  //     matrix = Matrix4.diagonal3Values(1, currScale, 1);
-  //     matrix = Matrix4.diagonal3Values(1, currScale, 1)
-  //       ..setTranslationRaw(0, currTrans, 0);
-  //   } else if (index == _currPageValue.floor() - 1) {
-  //     var currScale = 1 - (_currPageValue - index) * (1 - _scaleFactor);
-  //     var currTrans = _height * (1 - currScale) / 2;
-  //     matrix = Matrix4.diagonal3Values(1, currScale, 1);
-  //     matrix = Matrix4.diagonal3Values(1, currScale, 1)
-  //       ..setTranslationRaw(0, currTrans, 0);
-  //   } else {
-  //     var currScale = 0.8;
-  //     matrix = Matrix4.diagonal3Values(1, currScale, 1)
-  //       ..setTranslationRaw(0, _height * (1 - _scaleFactor) / 2, 1);
-  //   }
-  //
-  //   //var index;
-  //   return Transform(
-  //     transform: matrix,
-  //     child: Stack(
-  //       children: <Widget>[
-  //         GestureDetector(
-  //           onTap: () {
-  //             Get.toNamed(RouteHelper.getPopularFood(index, "home"));
-  //           },
-  //           child: CachedNetworkImage(
-  //             imageUrl: AppConstants.BASE_URL +
-  //                 AppConstants.UPLOAD_URI +
-  //                 popularProduct.img!,
-  //             imageBuilder: (context, imageProvider) => Container(
-  //               height: Dimensions.pageViewContainer,
-  //               margin: EdgeInsets.only(
-  //                   left: Dimensions.width10, right: Dimensions.width10),
-  //               decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.circular(Dimensions.radius30),
-  //                 image: DecorationImage(
-  //                   image: imageProvider,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //               ),
-  //             ),
-  //             errorWidget: (context, url, error) => Image.network(
-  //                 AppConstants.BASE_URL +
-  //                     AppConstants.UPLOAD_URI +
-  //                     popularProduct.img!),
-  //           ),
-  //         ),
-  //         Align(
-  //           alignment: Alignment.bottomCenter,
-  //           child: Container(
-  //             height: 120,
-  //             margin: EdgeInsets.only(
-  //                 left: Dimensions.width30,
-  //                 right: Dimensions.width30,
-  //                 bottom: Dimensions.height30),
-  //             decoration: BoxDecoration(
-  //                 borderRadius: BorderRadius.circular(Dimensions.radius20),
-  //                 color: Colors.white,
-  //                 boxShadow: [
-  //                   BoxShadow(
-  //                     color: Color(0xFFe8e8e8),
-  //                     blurRadius: 5.0,
-  //                     offset: Offset(0, 5),
-  //                   ),
-  //                   BoxShadow(
-  //                     color: Colors.white,
-  //                     offset: Offset(-5, 0),
-  //                   ),
-  //                   BoxShadow(
-  //                     color: Colors.white,
-  //                     offset: Offset(5, 0),
-  //                   )
-  //                 ]),
-  //             child: Container(
-  //               padding: EdgeInsets.only(
-  //                   top: Dimensions.height15, left: 15, right: 15),
-  //               child: AppColumn(
-  //                 text: popularProduct.name!,
-  //               ),
-  //             ),
-  //           ),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
+import 'package:flutter/material.dart';
+import 'package:gym_app/utils/dimentions.dart';
+
+class CustomSlideBar extends StatefulWidget {
+  final List<String> imageUrls;
+  final double height;
+  final double width;
+  final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
+  final double dotHeight;
+  final double dotWidth;
+  final Color activeDotColor;
+  final Color inactiveDotColor;
+  final Duration autoSlideDuration;
+  
+  const                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       CustomSlideBar({
+    super.key,
+    required this.imageUrls,
+    this.height = 200,
+    this.width = double.infinity,
+    this.margin = const EdgeInsets.all(0),
+    this.padding = const EdgeInsets.all(0),
+    this.dotHeight = 10,
+    this.dotWidth = 10,
+    this.activeDotColor = Colors.black,
+    this.inactiveDotColor = Colors.grey,
+    this.autoSlideDuration = const Duration(seconds: 3),
+  });
+
+  @override
+  State<CustomSlideBar> createState() => _CustomSlideBarState();
+}
+
+class _CustomSlideBarState extends State<CustomSlideBar> {
+  late PageController _pageController;
+  int _currentPage = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _startAutoSlide();
+  }
+  
+  void _startAutoSlide(){
+    if(widget.imageUrls.length <= 1)return;
+    // Auto-slide setup
+    _timer = Timer.periodic(widget.autoSlideDuration, (timer) {
+      if (_pageController.hasClients ) {
+        final nextPage = _currentPage + 1;
+        if(nextPage < widget.imageUrls.length){
+          _pageController.animateToPage(
+            nextPage,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }else {
+          _pageController.animateToPage(
+            0,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      }
+    });
+  }
+
+  void _onChanged(int index){
+    setState(()=> _currentPage = index);
+  }
+  
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    //final dims = Dimensions(context);
+    return Container(
+      height: widget.height,
+      width: widget.width,
+      margin: widget.margin,
+      padding: widget.padding,
+      child: Column(
+        children: [
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: widget.imageUrls.length,
+                onPageChanged: (index) => setState(() => _onChanged(index)),
+                itemBuilder: (context, index) {
+                  return Image.asset(
+                    widget.imageUrls[index],
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, child, progress) {
+                      if (progress == null) {
+                        return Center(child: Icon(Icons.broken_image, color: Colors.grey, size: 30),);
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          _buildDotsIndicator(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDotsIndicator() {
+    final dims = Dimensions(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(widget.imageUrls.length, (index) {
+        bool isActive = index == _currentPage;
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          padding: EdgeInsets.all(dims.height2 * 2),
+          height: widget.dotHeight,
+          width: widget.dotWidth,
+          decoration: BoxDecoration(
+            color: isActive ? widget.activeDotColor : widget.inactiveDotColor,
+            borderRadius: BorderRadius.circular(dims.radius20),
+          ),
+        );
+      }),
+    );
   }
 }

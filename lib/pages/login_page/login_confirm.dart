@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gym_app/pages/home_page/home_page.dart';
 
 class LoginConfirm extends StatelessWidget {
   const LoginConfirm({super.key});
@@ -55,7 +56,7 @@ class LoginConfirm extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey[300],
