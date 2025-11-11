@@ -14,6 +14,8 @@ class CustomSlideBar extends StatefulWidget {
   final Color activeDotColor;
   final Color inactiveDotColor;
   final Duration autoSlideDuration;
+  final BorderRadiusGeometry borderRadius;
+  final BoxFit imageFit;
   
   const                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       CustomSlideBar({
     super.key,
@@ -27,6 +29,8 @@ class CustomSlideBar extends StatefulWidget {
     this.activeDotColor = Colors.black,
     this.inactiveDotColor = Colors.grey,
     this.autoSlideDuration = const Duration(seconds: 3),
+    this.borderRadius = BorderRadius.zero,
+    this.imageFit = BoxFit.cover,
   });
 
   @override
@@ -91,31 +95,38 @@ class _CustomSlideBarState extends State<CustomSlideBar> {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: widget.borderRadius,
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: widget.imageUrls.length,
-                onPageChanged: (index) => setState(() => _onChanged(index)),
+                onPageChanged: _onChanged,
                 itemBuilder: (context, index) {
-                  return Image.asset(
-                    widget.imageUrls[index],
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, child, progress) {
-                      if (progress == null) {
-                        return Center(child: Icon(Icons.broken_image, color: Colors.grey, size: 30),);
-                      }
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                  );
+                  return _buildImageItem(widget.imageUrls[index]);
                 },
               ),
             ),
           ),
           SizedBox(height: 10),
-          _buildDotsIndicator(),
+          if(widget.imageUrls.length > 1)  _buildDotsIndicator(),
         ],
       ),
     );
+  }
+
+  Widget _buildImageItem(String imageUrl){
+    return Image.asset(
+      imageUrl,
+      fit: widget.imageFit,
+      errorBuilder: (context, child, progress) {
+          return const Center(child: Icon(Icons.broken_image, color: Colors.grey, size: 30));
+      },
+    );
+    loadingBuilder: (context, child, loadingProgress){
+      if (loadingProgress == null) {
+        return child;
+      }
+      return const Center(child: CircularProgressIndicator());
+    };
   }
 
   Widget _buildDotsIndicator() {
@@ -123,15 +134,18 @@ class _CustomSlideBarState extends State<CustomSlideBar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(widget.imageUrls.length, (index) {
-        bool isActive = index == _currentPage;
-        return AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          padding: EdgeInsets.all(dims.height2 * 2),
-          height: widget.dotHeight,
-          width: widget.dotWidth,
-          decoration: BoxDecoration(
-            color: isActive ? widget.activeDotColor : widget.inactiveDotColor,
-            borderRadius: BorderRadius.circular(dims.radius20),
+        final isActive = index == _currentPage;
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 4),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            padding: EdgeInsets.all(dims.height2 * 2),
+            height: widget.dotHeight,
+            width: isActive ? widget.dotWidth * 1.5 : widget.dotWidth,
+            decoration: BoxDecoration(
+              color: isActive ? widget.activeDotColor : widget.inactiveDotColor,
+              borderRadius: BorderRadius.circular(widget.dotHeight/2),
+            ),
           ),
         );
       }),
