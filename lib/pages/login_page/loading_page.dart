@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:gym_app/pages/home_page/home_page.dart';
 import 'package:gym_app/utils/colors.dart';
+
+import '../home_page/navigation_bar.dart';
 
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
@@ -18,7 +19,7 @@ class _LoadingPageState extends State<LoadingPage> {
     Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => ButtonNavigationBar()),
       );
     });
   }

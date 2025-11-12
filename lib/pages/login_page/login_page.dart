@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gym_app/pages/login_page/loading_page.dart';
 import 'package:gym_app/pages/login_page/login_confirm.dart';
 import 'package:gym_app/utils/colors.dart';
+import 'package:gym_app/utils/dimensions.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -152,11 +153,11 @@ class LoginPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _socialIcon(Icons.g_mobiledata),
+                  _socialIcon(Icons.g_mobiledata, Colors.redAccent, context),
                   SizedBox(width: 16),
-                  _socialIcon(Icons.facebook),
+                  _socialIcon(Icons.facebook, Color(0xFF1E6FFF), context),
                   SizedBox(width: 16),
-                  _socialIcon(Icons.apple),
+                  _socialIcon(Icons.apple,Color(0xFF1E6FFF), context),
                 ],
               ),
               SizedBox(height: 16),
@@ -171,11 +172,12 @@ class LoginPage extends StatelessWidget {
   }
 
   // Social Icon widget helper
-  static Widget _socialIcon(IconData icon) {
+  static Widget _socialIcon(IconData icon, Color color, BuildContext context) {
+    final dims = Dimensions(context);
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-      child: Icon(icon, color: Color(0xFF1E6FFF), size: 24),
+      child: Icon(icon, color: color, size: dims.iconSize24 + 5),
     );
   }
 }
