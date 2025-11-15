@@ -34,7 +34,7 @@ class _LoadingPageState extends State<LoadingPage> {
           children: [
             // Big Text
             Text(
-              "FLITGYM",
+              "FLIT\nGYM",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 48,

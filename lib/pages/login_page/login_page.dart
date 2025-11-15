@@ -9,10 +9,10 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.bgColor,
-        body: SingleChildScrollView(
+    return Scaffold(
+      backgroundColor: AppColors.bgColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,7 +157,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(width: 16),
                   _socialIcon(Icons.facebook, Color(0xFF1E6FFF), context),
                   SizedBox(width: 16),
-                  _socialIcon(Icons.apple,Color(0xFF1E6FFF), context),
+                  _socialIcon(Icons.apple, Color(0xFF1E6FFF), context),
                 ],
               ),
               SizedBox(height: 16),
